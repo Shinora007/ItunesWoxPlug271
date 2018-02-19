@@ -1,0 +1,12 @@
+﻿{
+    "ID": "A9323D5E130711E8998628F10E0C69B7", //Plugin ID，32 bit UUID
+    "ActionKeyword": "it", //Plugin default action keyword
+    "Name": "Itunes Control", //Plugin name
+    "Description": "Itunes Control", //Plugin description
+    "Author": "shinora007", //Plugin Author
+    "Version": "1.0.0", //Plugin version，must be x.x.x format
+    "Language": "csharp", //Plugin language，we support csharp,python and executable now
+    "Website": "http://www.google.com/search?q=shinora007", //Plugin website or author website
+    "IcoPath": "Images\\Itunes.png", //Plugin icon, relative path to the pluign folder
+    "ExecuteFileName": "ItunesWoxPlugin.dll" //Execution entry. Dll name for c# plugin, and python file for python plugin
+}
