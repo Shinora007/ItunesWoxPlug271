@@ -37,7 +37,7 @@ namespace ItunesWoxPlugin
         private List<Result> SearchTrack(Query query)
         {
             var result = new List<Result>();
-            var songList = _itApp.LibraryPlaylist.Search(query.Search, ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
+            var songList = _itApp.LibraryPlaylist.Search(query.Search, ITPlaylistSearchField.ITPlaylistSearchFieldAll);
 
             if (songList != null)
             {
@@ -52,11 +52,12 @@ namespace ItunesWoxPlugin
                             IcoPath = "Images\\Itunes.png",
                             Action = e => {
                                 track.Play();
-                                return true;
+                                return false;
                             }
                         });
                 }
             }
+
             return result;
         }
 
