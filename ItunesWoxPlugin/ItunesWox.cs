@@ -9,6 +9,8 @@ namespace ItunesWoxPlugin
     {
         private IiTunes _itApp;
 
+
+
         public void Init(PluginInitContext context)
         {
             try
@@ -29,17 +31,33 @@ namespace ItunesWoxPlugin
             {
                 return StandardMenu();
             }
+            return SearchTrack(query);
+        }
 
-            return new List<Result> {
-                new Result{
-                    Title = $"Search Result: {query.Search}",
-                    SubTitle = "TODO",
-                    IcoPath = "Images\\Itunes.png",
-                    Action = e => {
-                        return true;
-                    }
+        private List<Result> SearchTrack(Query query)
+        {
+            var result = new List<Result>();
+            var songList = _itApp.LibraryPlaylist.Search(query.Search, ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
+
+            if (songList != null)
+            {
+                for (int i = 1; i <= songList.Count && i<=10 ; i++)
+                {
+                    var track = songList.ItemByPlayOrder[i];
+                    result.Add(
+                        new Result
+                        {
+                            Title = songList.ItemByPlayOrder[i].Name,
+                            SubTitle = songList.ItemByPlayOrder[i].Artist,
+                            IcoPath = "Images\\Itunes.png",
+                            Action = e => {
+                                track.Play();
+                                return true;
+                            }
+                        });
                 }
-            };
+            }
+            return result;
         }
 
         private List<Result> StandardMenu()

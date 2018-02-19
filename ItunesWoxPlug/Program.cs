@@ -4,7 +4,7 @@ using Wox.Plugin;
 
 namespace ItunesWoxPlug
 {
-    public class Program : IPlugin
+    public class Program
     {
         private IiTunes _itApp;
 
@@ -13,42 +13,25 @@ namespace ItunesWoxPlug
             var _itApp = new iTunesApp();
             try
             {
-                var songList = _itApp.LibraryPlaylist.Search("Unravel", ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
+                var songList = _itApp.LibraryPlaylist.Search("rain", ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
 
-                if (songList.Count > 0)
+                if (songList != null)
                 {
-                    var track = songList.ItemByPlayOrder[1];
-                    track.Play();
+                    //var track = songList.ItemByPlayOrder[1];
+                    //track.Play();
+                    for(int i=1; i<=songList.Count; i++)
+                    {
+                        System.Console.WriteLine(songList.ItemByPlayOrder[i].Name);
+                        System.Console.ReadKey();
+                        songList.ItemByPlayOrder[i].Play();
+                    }
                 }
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
-        }
-
-        public void Init(PluginInitContext context)
-        {
-            _itApp = new iTunesApp();
-        }
-
-        public List<Result> Query(Query query)
-        {
-            List<Result> results = new List<Result>();
-            results.Add(new Result()
-            {
-                Title = "Jai howe",
-                SubTitle = "Sub title",
-                IcoPath = "Images\\plugin.png",  //relative path to your plugin directory
-                Action = e =>
-                {
-                    // after user select the item
-
-                    // return false to tell Wox don't hide query window, otherwise Wox will hide it automatically
-                    return false;
-                }
-            });
-            return results;
+            System.Console.ReadKey();
         }
     }
 }
