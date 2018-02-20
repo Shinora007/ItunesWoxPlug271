@@ -9,24 +9,56 @@ namespace ItunesWoxPlugin
     {
         private IiTunes _itApp;
 
-
-
         public void Init(PluginInitContext context)
+        {
+            _itApp = null;
+        }
+
+        public List<Result> Query(Query query)
         {
             try
             {
-
-                _itApp = new iTunesApp();
+                if (_itApp == null)
+                {
+                    return new List<Result>
+                    {
+                        new Result
+                        {
+                            Title = "Start Itunes Plugin",
+                            SubTitle = "",
+                            IcoPath = "Images\\Itunes.png",
+                            Action = e => {
+                                _itApp = new iTunesApp();
+                                return true;
+                            }
+                        }
+                    };
+                } else if (query.Search.Contains("exit"))
+                {
+                    return new List<Result>
+                    {
+                        new Result
+                        {
+                            Title = "Quit Itunes",
+                            SubTitle = "",
+                            IcoPath = "Images\\Itunes.png",
+                            Action = e => {
+                                _itApp.Quit();
+                                _itApp = null;
+                                return true;
+                            }
+                        }
+                    };
+                }
             }
             catch (Exception)
             {
                 // TODO: Something to start the Itunes music player
                 throw;
             }
-        }
 
-        public List<Result> Query(Query query)
-        {
+
+
             if (string.IsNullOrWhiteSpace(query.Search))
             {
                 return StandardMenu();
@@ -48,7 +80,7 @@ namespace ItunesWoxPlugin
                         new Result
                         {
                             Title = songList.ItemByPlayOrder[i].Name,
-                            SubTitle = songList.ItemByPlayOrder[i].Artist,
+                            SubTitle = $"{songList.ItemByPlayOrder[i].Album} - {songList.ItemByPlayOrder[i].Artist}",
                             IcoPath = "Images\\Itunes.png",
                             Action = e => {
                                 track.Play();
@@ -68,7 +100,7 @@ namespace ItunesWoxPlugin
                 new Result()
                 {
                     Title = "Play/Pause",
-                    SubTitle = _itApp.CurrentTrack.Name,
+                    SubTitle = $"{_itApp.CurrentTrack.Name} - {_itApp.CurrentTrack.Artist} {TimeSpan.FromSeconds(_itApp.PlayerPosition).ToString(@"mm\:ss")} / {_itApp.CurrentTrack.Time}",
                     IcoPath = "Images\\Itunes.png",  //relative path to your plugin directory
                     Action = e =>
                     {
